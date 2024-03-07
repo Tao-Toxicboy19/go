@@ -9,11 +9,6 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-type LoginResponse struct {
-	AccessToken  string `json:"access_token"`
-	RefreshToken string `json:"refresh_token"`
-}
-
 func (a *DB) SignUp(user *domain.Users) (*domain.Users, error) {
 	req := a.db.Where("username = ? ", user.Username).First(&user)
 

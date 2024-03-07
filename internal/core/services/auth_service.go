@@ -1,7 +1,6 @@
 package services
 
 import (
-	"auth/internal/adapters/repo"
 	"auth/internal/core/domain"
 	"auth/internal/core/ports"
 )
@@ -16,8 +15,4 @@ func NewAuthService(repo ports.AuthRepository) *AuthService {
 
 func (a *AuthService) SignUp(user *domain.Users) (*domain.Users, error) {
 	return a.repo.SignUp(user)
-}
-
-func (a *AuthService) SignIn(username, password string) (*repo.LoginResponse, error) {
-	return a.repo.SignIn(username, password)
 }

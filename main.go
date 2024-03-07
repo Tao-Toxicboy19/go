@@ -1,10 +1,16 @@
 package main
 
 import (
+	"auth/internal/adapters/repo"
 	"auth/internal/core/domain"
+	"auth/internal/core/services"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+)
+
+var (
+	authService *services.AuthService
 )
 
 func main() {
@@ -17,4 +23,8 @@ func main() {
 	}
 
 	db.AutoMigrate(&domain.Users{})
+
+	store := repo.NewDB(db)
+
+	authService = services.NewAuthService(store)
 }
