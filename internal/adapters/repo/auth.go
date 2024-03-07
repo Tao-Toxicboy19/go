@@ -1,6 +1,20 @@
 package repo
 
-func (a *DB) SignUp(user *domain.User) (*domain.User, error) {
+import (
+	"auth/internal/core/domain"
+	"errors"
+	"fmt"
+
+	"github.com/google/uuid"
+	"golang.org/x/crypto/bcrypt"
+)
+
+type LoginResponse struct {
+	AccessToken  string `json:"access_token"`
+	RefreshToken string `json:"refresh_token"`
+}
+
+func (a *DB) SignUp(user *domain.Users) (*domain.Users, error) {
 	req := a.db.Where("username = ? ", user.Username).First(&user)
 
 	if req.RowsAffected != 0 {
@@ -16,8 +30,10 @@ func (a *DB) SignUp(user *domain.User) (*domain.User, error) {
 	user.Password = string(hash)
 
 	req = a.db.Create(&user)
+
 	if req.RowsAffected == 0 {
 		return nil, fmt.Errorf("user not saved: %v", req.Error)
 	}
+
 	return user, nil
 }
